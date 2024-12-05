@@ -77,7 +77,7 @@ app.post("/generate", async (req, res) => {
         // Retrieve session history
         const session = sessions[sessionId];
         const historyCopy = JSON.parse(JSON.stringify(session.history)); // Create a deep copy of the history
-        
+
         const chatSession = model.startChat({
             generationConfig,
             history: historyCopy,
@@ -90,7 +90,7 @@ app.post("/generate", async (req, res) => {
         console.log("Session History 1:", session.history)
 
         session.history.push({ role: "user", parts: input });
-        session.history.push({ role: "model", parts: response.response.text() });
+        session.history.push({ role: "model", parts: [response.response.text()] });
 
         console.log("Session History 2:", session.history)
 
