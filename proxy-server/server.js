@@ -76,9 +76,11 @@ app.post("/generate", async (req, res) => {
     try {
         // Retrieve session history
         const session = sessions[sessionId];
+        const historyCopy = JSON.parse(JSON.stringify(session.history)); // Create a deep copy of the history
+        
         const chatSession = model.startChat({
             generationConfig,
-            history: session.history,
+            history: historyCopy,
         });
 
         // Generate a response
