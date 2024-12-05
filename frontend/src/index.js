@@ -52,6 +52,7 @@ async function sendMessage(input) {
         }
 
         const response = await generateAIResponse(input);
+        console.log("Response from AI:", response);
         return response
 
     } catch (error) {
@@ -162,6 +163,8 @@ async function handleOption(option) {
     try {
         chatHistory.push(option)
         const response = await sendMessage(option, player);
+
+        console.log("Response from handleOption:", response);
 
         // Update the game state
         currentStory = response.story;
