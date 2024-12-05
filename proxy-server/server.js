@@ -89,7 +89,7 @@ app.post("/generate", async (req, res) => {
         // Update the session history
         console.log("Session History 1:", session.history)
 
-        session.history.push({ role: "user", parts: [input] });
+        session.history.push({ role: "user", parts: [{text: input}] });
         session.history.push({ role: "model", parts: [response.response.text()] });
 
         console.log("Session History 2:", session.history)
