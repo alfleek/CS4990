@@ -52,6 +52,7 @@ async function sendMessage(input) {
         }
 
         const response = await generateAIResponse(input);
+        return await response.json();
 
     } catch (error) {
         console.error("Error sending message:", error);
