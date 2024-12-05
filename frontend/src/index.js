@@ -52,7 +52,7 @@ async function sendMessage(input) {
         }
 
         const response = await generateAIResponse(input);
-        return await response
+        return response
 
     } catch (error) {
         console.error("Error sending message:", error);
@@ -90,15 +90,13 @@ const player = new Player("Adventurer", 100, "Crossroads", []);
 try {
     const response = await sendMessage("You are a dungeon master operating a role playing game for the user. 'story' will contain your text responses. You will always provide two potentioal options for the user in every response, in 'firstoption' and 'secondoption'. For example: 'Search your surrounding for clues' Do not include these options in 'story'. Start by creating a blank player with 100 hp and prompting the player with 'Welcome, adventurer! You stand at the crossroads, your journey yet unwritten.  What kind of story do you want to embark on? A tale of daring heroism? A quest for ancient artifacts?  A dark and perilous descent into the underworld? Tell me your choice!'. From then on you will narrate the story and keep track of the player data", player);
 
-    const parsedResponse = JSON.parse(response);
-
     // Update the game state
-    currentStory = parsedResponse.story;
-    currentOptions = [parsedResponse.firstoption, parsedResponse.secondoption];
-    player.hp = parsedResponse.hp; // Assuming response has `hp` at root level
-    player.location = parsedResponse.location;
-    player.name = parsedResponse.name;
-    player.inventory = parsedResponse.inventory
+    currentStory = response.story;
+    currentOptions = [response.firstoption, response.secondoption];
+    player.hp = response.hp; // Assuming response has `hp` at root level
+    player.location = response.location;
+    player.name = response.name;
+    player.inventory = response.inventory
 
 
     
@@ -163,15 +161,13 @@ async function handleOption(option) {
         chatHistory.push(option)
         const response = await sendMessage(option, player);
 
-        const parsedResponse = JSON.parse(response);
-
         // Update the game state
-        currentStory = parsedResponse.story;
-        currentOptions = [parsedResponse.firstoption, parsedResponse.secondoption];
-        player.hp = parsedResponse.hp; // Assuming response has `hp` at root level
-        player.location = parsedResponse.location;
-        player.name = parsedResponse.name;
-        player.inventory = parsedResponse.inventory
+        currentStory = response.story;
+        currentOptions = [response.firstoption, response.secondoption];
+        player.hp = response.hp; // Assuming response has `hp` at root level
+        player.location = response.location;
+        player.name = response.name;
+        player.inventory = response.inventory
         
 
         // Refresh the UI
