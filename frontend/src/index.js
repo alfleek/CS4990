@@ -73,7 +73,7 @@ constructor(name, hp, location, inventory = []) {
     this.name = name;
     this.hp = hp;
     this.location = location;
-    this.inventory = inventory;
+    this.inventory = inventory || [];
 }
 
 
@@ -116,44 +116,46 @@ try {
 
 
 function updateUI() {
-// Update the story
-document.getElementById("story").innerText = currentStory;
+    // Update the story
+    document.getElementById("story").innerText = currentStory;
 
-// Update the options
-const optionsContainer = document.getElementById("options");
-optionsContainer.innerHTML = "";
-currentOptions.forEach((option, index) => {
-    const button = document.createElement("button");
-    button.classList.add("option-button");
-    button.innerText = option;
-    button.onclick = () => handleOption(option);
-    optionsContainer.appendChild(button);
-});
+    // Update the options
+    const optionsContainer = document.getElementById("options");
+    optionsContainer.innerHTML = "";
+    currentOptions.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.classList.add("option-button");
+        button.innerText = option;
+        button.onclick = () => handleOption(option);
+        optionsContainer.appendChild(button);
+    });
 
-// Add a text box for the third option
-const textBoxOption = document.createElement("div");
-textBoxOption.classList.add("textbox-option");
+    // Add a text box for the third option
+    const textBoxOption = document.createElement("div");
+    textBoxOption.classList.add("textbox-option");
 
-const inputField = document.createElement("input");
-inputField.type = "text";
-inputField.id = "text-input"; // Giving it an id to easily retrieve the value
-inputField.placeholder = "Type your custom action...";
+    const inputField = document.createElement("input");
+    inputField.type = "text";
+    inputField.id = "text-input"; // Giving it an id to easily retrieve the value
+    inputField.placeholder = "Type your custom action...";
 
-const submitButton = document.createElement("button");
-submitButton.innerText = "Submit";
-submitButton.onclick = () => handleOption(inputField.value); // Pass the input value when submitting
+    const submitButton = document.createElement("button");
+    submitButton.innerText = "Submit";
+    submitButton.onclick = () => handleOption(inputField.value); // Pass the input value when submitting
 
-textBoxOption.appendChild(inputField);
-textBoxOption.appendChild(submitButton);
+    textBoxOption.appendChild(inputField);
+    textBoxOption.appendChild(submitButton);
 
-optionsContainer.appendChild(textBoxOption);
+    optionsContainer.appendChild(textBoxOption);
 
-// Update player stats
-document.getElementById("player-name").innerText = `Player: ${player.name}`;
-document.getElementById("player-hp").innerText = `HP: ${player.hp}`;
-document.getElementById("player-inventory").innerText = `Inventory: ${player.inventory
-    .map(item => `${item.name} x${item.quantity}`)
-    .join(", ")}`;
+    const inventoryText = player.inventory && Array.isArray(player.inventory)
+        ? player.inventory.map(item => `${item.name} x${item.quantity}`).join(", ")
+        : "No items";
+
+    // Update player stats
+    document.getElementById("player-name").innerText = `Player: ${player.name}`;
+    document.getElementById("player-hp").innerText = `HP: ${player.hp}`;
+    document.getElementById("player-inventory").innerText = `Inventory: ${inventoryText}`;
 }
 
 async function handleOption(option) {
