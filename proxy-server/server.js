@@ -93,7 +93,6 @@ app.post("/generate", async (req, res) => {
             firstoption: response.response.text().firstoption,
             secondoption: response.response.text().secondoption,
             inventory: response.response.text().inventory,
-            history: session.history,
         });
     } catch (error) {
         console.error("Error generating AI response:", error);
