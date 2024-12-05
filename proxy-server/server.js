@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors');
 const bodyParser = require("body-parser");
 const { v4: uuidv4 } = require("uuid");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -6,12 +7,55 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const app = express();
 const port = process.env.PORT || 3000;
 
+const corsOptions = {
+    origin: 'https://alfleek.github.io',
+    optionsSuccessStatus: 200 // For legacy browsers
+  };
+  
+app.use(cors(corsOptions));
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
 });
+
+const generationConfig = {
+    temperature: 1,
+    topP: 0.95,
+    topK: 40,
+    maxOutputTokens: 8192,
+    responseMimeType: "application/json",
+    response_schema: {
+    "type": "object",
+    "properties": {
+        "story": {"type": "string"},
+        "firstoption": {"type": "string"},
+        "secondoption": {"type": "string"},
+        "name": {"type": "string"},
+        "hp": {"type": "integer"},
+        "location": {"type": "string"},
+        "inventory": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "quantity": {"type": "integer"}
+                },
+                "required": ["name", "quantity"]
+            }
+        }
+    },
+    "required": ["story", "firstoption", "secondoption", "name", "hp", "location", "inventory"]
+    }
+};
 
 app.use(bodyParser.json());
 
@@ -37,6 +81,7 @@ app.post("/generate", async (req, res) => {
         // Retrieve session history
         const session = sessions[sessionId];
         const chatSession = model.startChat({
+            generationConfig,
             history: session.history,
         });
 
