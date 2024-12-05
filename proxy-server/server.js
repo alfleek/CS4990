@@ -89,21 +89,23 @@ app.post("/generate", async (req, res) => {
         // Update the session history
         console.log("Session History 1:", session.history)
 
+        let parsedResponse;
+        try {
+            parsedResponse = typeof response.response.text() === "string"
+                ? JSON.parse(response.response.text()) // Parse if it's a string
+                : response.response.text(); // Otherwise, it's already an object
+        } catch (error) {
+            console.error("Error parsing response:", error);
+            return res.status(500).send("Error parsing response");
+        }
+
         session.history.push({ role: "user", parts: [{text: input}] });
-        session.history.push({ role: "model", parts: [response.response.text()] });
+        session.history.push({ role: "model", parts: [parsedResponse] });
 
         console.log("Session History 2:", session.history)
 
          // Check if the response is a string (in case it needs parsing)
-         let parsedResponse;
-         try {
-             parsedResponse = typeof response.response.text() === "string"
-                 ? JSON.parse(response.response.text()) // Parse if it's a string
-                 : response.response.text(); // Otherwise, it's already an object
-         } catch (error) {
-             console.error("Error parsing response:", error);
-             return res.status(500).send("Error parsing response");
-         }
+         
 
         res.json({
             story: parsedResponse.story,
