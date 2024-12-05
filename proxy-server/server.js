@@ -89,6 +89,12 @@ app.post("/generate", async (req, res) => {
         // Update the session history
         console.log("Session History 1:", session.history)
 
+        session.history.push({ role: "user", parts: [{text: input}] });
+        session.history.push({ role: "model", parts: [{text: response.response.text()}] });
+
+        console.log("Session History 2:", session.history)
+
+         // Check if the response is a string (in case it needs parsing)
         let parsedResponse;
         try {
             parsedResponse = typeof response.response.text() === "string"
@@ -98,14 +104,6 @@ app.post("/generate", async (req, res) => {
             console.error("Error parsing response:", error);
             return res.status(500).send("Error parsing response");
         }
-
-        session.history.push({ role: "user", parts: [{text: input}] });
-        session.history.push({ role: "model", parts: [parsedResponse] });
-
-        console.log("Session History 2:", session.history)
-
-         // Check if the response is a string (in case it needs parsing)
-         
 
         res.json({
             story: parsedResponse.story,
