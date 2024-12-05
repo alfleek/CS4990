@@ -88,6 +88,8 @@ app.post("/generate", async (req, res) => {
         session.history.push({ role: "user", parts: input });
         session.history.push({ role: "model", parts: response.response.text() });
 
+        console.log(session.history)
+
          // Check if the response is a string (in case it needs parsing)
          let parsedResponse;
          try {
