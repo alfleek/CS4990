@@ -107,7 +107,7 @@ app.post("/generate", async (req, res) => {
             firstoption: parsedResponse.firstoption,
             secondoption: parsedResponse.secondoption,
             name: parsedResponse.name,
-            hp: parsedresponse.hp,
+            hp: parsedResponse.hp,
             inventory: parsedResponse.inventory,
         });
     } catch (error) {
