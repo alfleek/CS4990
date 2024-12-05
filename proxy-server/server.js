@@ -92,6 +92,7 @@ app.post("/generate", async (req, res) => {
             story: response.response.text().story,
             firstoption: response.response.text().firstoption,
             secondoption: response.response.text().secondoption,
+            inventory: response.response.text().inventory,
             history: session.history,
         });
     } catch (error) {
