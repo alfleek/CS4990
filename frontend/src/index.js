@@ -41,6 +41,8 @@ async function generateAIResponse(input) {
         throw new Error("Failed to fetch AI response");
     }
 
+    console.log("Response from AI:", response);
+
     return await response.json();
 }
 
@@ -52,7 +54,7 @@ async function sendMessage(input) {
         }
 
         const response = await generateAIResponse(input);
-        console.log("Response from AI:", response);
+        console.log("Response from sendMessage:", response);
         return response
 
     } catch (error) {
