@@ -53,8 +53,6 @@ async function sendMessage(input) {
 
         const response = await generateAIResponse(input);
 
-        // Update the chat UI
-        displayChatHistory(response.history);
     } catch (error) {
         console.error("Error sending message:", error);
     }
