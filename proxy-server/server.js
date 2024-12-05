@@ -88,15 +88,13 @@ app.post("/generate", async (req, res) => {
         session.history.push({ role: "user", content: input });
         session.history.push({ role: "assistant", content: response.response.text() });
 
-        res.json({
-            story: response.response.text()
-        })
+        const parsedResponse = JSON.parse(response.response.text());
 
         res.json({
-            story: response.response.text().story,
-            firstoption: response.response.text().firstoption,
-            secondoption: response.response.text().secondoption,
-            inventory: response.response.text().inventory,
+            story: parsedResponse.story,
+            firstoption: parsedResponse.firstoption,
+            secondoption: parsedResponse.secondoption,
+            inventory: parsedResponse.inventory,
         });
     } catch (error) {
         console.error("Error generating AI response:", error);
