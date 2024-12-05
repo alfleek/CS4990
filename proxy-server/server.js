@@ -89,6 +89,10 @@ app.post("/generate", async (req, res) => {
         session.history.push({ role: "assistant", content: response.response.text() });
 
         res.json({
+            story: response.response.text()
+        })
+
+        res.json({
             story: response.response.text().story,
             firstoption: response.response.text().firstoption,
             secondoption: response.response.text().secondoption,
