@@ -85,10 +85,12 @@ app.post("/generate", async (req, res) => {
         const response = await chatSession.sendMessage(input);
 
         // Update the session history
+        console.log("Session History 1:", session.history)
+
         session.history.push({ role: "user", parts: input });
         session.history.push({ role: "model", parts: response.response.text() });
 
-        console.log(session.history)
+        console.log("Session History 2:", session.history)
 
          // Check if the response is a string (in case it needs parsing)
          let parsedResponse;

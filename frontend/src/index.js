@@ -164,7 +164,7 @@ function updateUI() {
 async function handleOption(option) {
     try {
         chatHistory.push(option)
-        const response = await sendMessage(option, player);
+        const response = await sendMessage(option);
 
         console.log("Response from handleOption:", response);
 
