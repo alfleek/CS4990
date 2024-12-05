@@ -88,7 +88,16 @@ app.post("/generate", async (req, res) => {
         session.history.push({ role: "user", content: input });
         session.history.push({ role: "assistant", content: response.response.text() });
 
-        const parsedResponse = JSON.parse(response.response.text());
+         // Check if the response is a string (in case it needs parsing)
+         let parsedResponse;
+         try {
+             parsedResponse = typeof response.response.text() === "string"
+                 ? JSON.parse(response.response.text()) // Parse if it's a string
+                 : response.response.text(); // Otherwise, it's already an object
+         } catch (error) {
+             console.error("Error parsing response:", error);
+             return res.status(500).send("Error parsing response");
+         }
 
         res.json({
             story: parsedResponse.story,
